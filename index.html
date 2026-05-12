@@ -3,33 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Daniel Caragay </title>
+    <title>Daniel Caragay | Dev</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- Flash Line Canvas -->
+    <canvas id="flashCanvas"></canvas>
+
+    <!-- Navigation Bar (Mag-a-appear pag nag-scroll) -->
+    <nav class="top-nav">
+        <div class="logo-text"><span>D</span>jc</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
     <div class="split-container">
-<!-- Profile & Name -->
         <div class="left-side">
             <div class="profile-box">
-                <img src="pics/profilepic.jpg" alt="My Face" class="my-photo">
-                <h1> Daniel Jed F. Caragay </h1>
-                <p> Student & Developer <br> "Learning today, building tomorrow." </p>
- </p>
+                <img src="pics/profilepic.jpg" alt="Daniel Caragay" class="my-photo">
+                <h1>Daniel Jed F. Caragay</h1>
+                <p>Student & Developer</p>
             </div>
         </div>
-<!-- Links -->
+
         <div class="right-side">
             <div class="links-container">
-                <a href="#" class="link-item">
-                    <i class="fab fa-github"></i> Home
-                </a>
-                <a href="#" class="link-item">
-                    <i class="fab fa-facebook"></i> About Me
-                </a>
+                <a href="#" class="link-item"><i class="fas fa-home"></i> Home</a>
+                <a href="#about" class="link-item"><i class="fas fa-user"></i> About Me</a>
+                <a href="#projects" class="link-item"><i class="fas fa-code"></i> My Projects</a>
+                <a href="#contact" class="link-item"><i class="fas fa-envelope"></i> Contact</a>
             </div>
         </div>
     </div>
+
+    <!-- Content Sections -->
+    <section id="about" class="content-section">
+        <div class="section-container">
+            <h2>About Me</h2>
+            <div class="placeholder-box">Wala munang content dito.</div>
+        </div>
+    </section>
+
+    <section id="projects" class="content-section">
+        <div class="section-container">
+            <h2>My Projects</h2>
+            <div class="placeholder-box">Wala munang content dito.</div>
+        </div>
+    </section>
+
+    <section id="contact" class="content-section">
+        <div class="section-container">
+            <h2>Contact</h2>
+            <div class="placeholder-box">Wala munang content dito.</div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
