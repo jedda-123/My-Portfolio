@@ -38,6 +38,7 @@ function drawFlash() {
     if (flashProgress > 1) flashProgress = -1;
     requestAnimationFrame(drawFlash);
 }
+
 // Click Animate
 document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', function() {
@@ -45,6 +46,7 @@ document.querySelectorAll('a').forEach(link => {
         drawFlash();
     });
 });
+
 // Existing Navbar Scroll Logic
 window.addEventListener('scroll', () => {
     if (window.scrollY > 200) {
@@ -53,16 +55,26 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('active');
     }
 });
-// Nav Animation
+
+// Nav Animation Accuracy
 const navLinks = document.querySelectorAll('.nav-links a, .link-item');
+const sections = document.querySelectorAll('section, .split-container');
 
-navLinks.forEach(link => {
-    link.addEventListener('click', function() {
-        flashProgress = 0;
-        drawFlash();
+window.addEventListener('scroll', () => {
+    let current = "";
 
-        navLinks.forEach(l => l.classList.remove('active-link'));
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
 
-        this.classList.add('active-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active-link');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active-link');
+        }
     });
 });
