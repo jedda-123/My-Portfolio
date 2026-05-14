@@ -119,11 +119,60 @@
 </section>
 
     <section id="contact" class="content-section">
-        <div class="section-container">
-            <h2>Contact</h2>
-            <div class="placeholder-box">Wala munang content dito!</div>
+    <div class="section-container">
+        <h2>Contact</h2>
+<!-- Socials Logo using Projects Grid layout for consistency -->
+        <div class="projects-grid">
+            
+            <!-- Link 1 -->
+            <div class="project-item">
+                <h3>Facebook</h3>
+                <div class="circle-link-container">
+                    <a href="https://www.facebook.com/share/17K5dA7mYT/" target="_blank" class="circle-item">
+                        <img src="pics/L1.png" alt="Social 1">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Link 2 -->
+            <div class="project-item">
+                <h3>Gmail</h3>
+                <div class="circle-link-container">
+                    <a href="mailto:caragaydaniel0@gmail.com" target="_blank" class="circle-item">
+                        <img src="pics/L2.webp" alt="Social 2">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Link 3 -->
+            <div class="project-item">
+                <h3>GitHub</h3>
+                <div class="circle-link-container">
+                    <a href="https://github.com/jedda-123" target="_blank" class="circle-item">
+                        <img src="pics/L3.png" alt="Social 3">
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </section>
+
+        <!-- Contact Form below the circles -->
+        <div class="contact-wrapper">
+            <form action="https://formspree.io/f/caragaydaniel0@gmail.com" method="POST" class="contact-form">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
 
     <script src="script.js"></script>
 </body>
