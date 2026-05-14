@@ -9,7 +9,7 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Show Navbar on Scroll
+// Show Navbar
 window.addEventListener('scroll', () => {
     if (window.scrollY > 200) {
         navbar.classList.add('active');
@@ -30,22 +30,43 @@ function drawFlash() {
     const maxRadius = Math.sqrt(canvas.width**2 + canvas.height**2);
     
     ctx.beginPath();
-    // Gumagawa ng line circle na lumalaki at lumiliit
     ctx.arc(centerX, centerY, maxRadius * flashProgress, 0, Math.PI * 2);
     ctx.strokeStyle = `rgba(0, 0, 0, ${1 - flashProgress})`;
     ctx.lineWidth = 5;
     ctx.stroke();
-
     flashProgress += 0.04;
     if (flashProgress > 1) flashProgress = -1;
-    
     requestAnimationFrame(drawFlash);
 }
-
-// Click Trigger
+// Click Animate
 document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', function() {
-        flashProgress = 0; // Reset progress to start from center
+        flashProgress = 0;
         drawFlash();
+    });
+});
+// Existing Navbar Scroll Logic
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+        navbar.classList.add('active');
+    } else {
+        navbar.classList.remove('active');
+    }
+});
+
+// Click Animate + Active Link Highlighter
+const navLinks = document.querySelectorAll('.nav-links a, .link-item');
+
+navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+        // 1. Play Flash Animation
+        flashProgress = 0;
+        drawFlash();
+
+        // 2. Remove "active-link" class sa lahat ng links
+        navLinks.forEach(l => l.classList.remove('active-link'));
+
+        // 3. Idagdag ang "active-link" class sa clinick mo
+        this.classList.add('active-link');
     });
 });

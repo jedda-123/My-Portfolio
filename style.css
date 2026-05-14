@@ -16,7 +16,6 @@ body { background: #fff; overflow-x: hidden; }
     pointer-events: none;
     z-index: 9999;
 }
-
 /* Logo "Djc" Style */
 .logo-text {
     font-weight: 600;
@@ -30,7 +29,6 @@ body { background: #fff; overflow-x: hidden; }
     border-radius: 4px;
     margin-right: 2px;
 }
-
 /* Sticky Navigation */
 .top-nav {
     position: fixed;
@@ -47,7 +45,6 @@ body { background: #fff; overflow-x: hidden; }
     transform: translateY(-100%); /* Hidden initially */
     transition: transform 0.4s ease;
 }
-
 /* Navbar active class via JS */
 .top-nav.active { transform: translateY(0); }
 
@@ -64,11 +61,29 @@ body { background: #fff; overflow-x: hidden; }
 /* Main Landing Sections */
 .split-container { display: flex; min-height: 100vh; }
 .left-side {
-    flex: 1; background: #f9f9f9;
+    flex: 1.6; /* Nilakihan para sakupin ang mas malaking corner */
+    background: #f9f9f9;
     display: flex; justify-content: center; align-items: center;
+    padding: 40px;
 }
-.my-photo { width: 150px; height: 150px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; }
-.profile-box h1 { font-size: 1.5rem; }
+.my-photo { 
+    width: 220px; /* Nilakihan ang photo */
+    height: 220px; 
+    border-radius: 15px; 
+    object-fit: cover; 
+    margin-bottom: 20px; 
+}
+.profile-box { text-align: center; } /* Siniguradong center ang alignment */
+.profile-box h1 { 
+    font-size: 2.8rem; /* Nilakihan ang name */
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+.profile-box p {
+    font-size: 1.2rem; /* Nilakihan ang tagline */
+    color: #666;
+    letter-spacing: 1px;
+}
 
 .right-side { flex: 1; display: flex; justify-content: center; align-items: center; }
 .links-container { width: 300px; display: flex; flex-direction: column; gap: 10px; }
@@ -84,4 +99,22 @@ body { background: #fff; overflow-x: hidden; }
 .placeholder-box {
     width: 100%; height: 300px; border: 2px dashed #eee;
     display: flex; justify-content: center; align-items: center; color: #ccc;
+}
+/* Styling para sa Navigation Links hover at active state */
+.nav-links a {
+    padding: 8px 16px; /* Nagdagdag ng padding para magka-space ang background */
+    border-radius: 8px; /* Rounded corners gaya ng nasa 1000104757.jpg */
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.nav-links a:hover {
+    background: #111;
+    color: #fff !important;
+}
+
+/* Active state - ito yung lalabas kapag clinick na */
+.nav-links a.active-link {
+    background: #111;
+    color: #fff !important;
 }
