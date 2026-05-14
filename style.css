@@ -191,15 +191,63 @@ body { background: #fff; overflow-x: hidden; }
 
 /* Mobile Pov */
 @media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+        padding-top: 100px;
+    }
+
+    .left-side, .right-side {
+        flex: none;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .my-photo { 
+        width: 90%;
+        max-width: 350px;
+        height: auto; 
+        margin: 0 auto 20px auto; 
+        display: block;
+    }
+
+    .links-container { 
+        margin: 0 auto;
+        width: 100%;
+        max-width: 300px;
+    }
+
     .about-flex {
         flex-direction: column;
         text-align: center;
+        gap: 30px;
     }
+
     .about-text {
         text-align: center;
     }
+
+    .about-p {
+        text-align: center;
+    }
+
     .about-image {
         justify-content: center;
+        width: 100%;
+    }
+
+    .top-nav {
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
+        padding: 6px 10px;
     }
 }
 
