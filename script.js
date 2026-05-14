@@ -53,20 +53,16 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('active');
     }
 });
-
-// Click Animate + Active Link Highlighter
+// Nav Animation
 const navLinks = document.querySelectorAll('.nav-links a, .link-item');
 
 navLinks.forEach(link => {
     link.addEventListener('click', function() {
-        // 1. Play Flash Animation
         flashProgress = 0;
         drawFlash();
 
-        // 2. Remove "active-link" class sa lahat ng links
         navLinks.forEach(l => l.classList.remove('active-link'));
 
-        // 3. Idagdag ang "active-link" class sa clinick mo
         this.classList.add('active-link');
     });
 });
