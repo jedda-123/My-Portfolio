@@ -142,3 +142,46 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+// Sticky Note Popup for Gmail
+document.addEventListener('DOMContentLoaded', function() {
+    const gmailTrigger = document.querySelector('.gmail-trigger');
+    const stickyNote = document.getElementById('stickyNote');
+    const copyBtn = document.querySelector('.copy-btn');
+    const closeBtn = document.querySelector('.close-note');
+    
+    if (gmailTrigger) {
+        gmailTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = this.getAttribute('data-email');
+            stickyNote.querySelector('p strong').textContent = email;
+            stickyNote.classList.remove('hidden');
+        });
+    }
+    
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            const email = stickyNote.querySelector('p strong').textContent;
+            navigator.clipboard.writeText(email).then(() => {
+                copyBtn.textContent = '✅ Copied!';
+                copyBtn.style.background = 'linear-gradient(45deg, #4caf50, #81c784)';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy Email';
+                    copyBtn.style.background = 'linear-gradient(45deg, #00ffff, #00d4ff)';
+                }, 2000);
+            });
+        });
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            stickyNote.classList.add('hidden');
+        });
+    }
+    
+    // Close on outside click
+    stickyNote.addEventListener('click', function(e) {
+        if (e.target === this) {
+            stickyNote.classList.add('hidden');
+        }
+    });
+});
