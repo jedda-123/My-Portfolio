@@ -70,6 +70,7 @@ body::after {
     height: 100%;
     pointer-events: none;
     z-index: 9999;
+    mix-blend-mode: screen;
 }
 
 .logo-text {
@@ -139,6 +140,26 @@ body::after {
     transform: translateY(-2px);
 }
 
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00);
+    width: 0%;
+    border-radius: 2px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+    transition: width 0.2s ease;
+}
+
 .split-container { display: flex; min-height: 100vh; }
 
 .left-side {
@@ -147,26 +168,6 @@ body::after {
     justify-content: center;
     align-items: center;
     padding: 40px;
-    /* FULL SPACE BACKGROUND - NO BLACK OVERLAY */
-}
-
-.my-photo {
-    width: 500px;
-    height: 500px;
-    border-radius: 25px;
-    object-fit: cover;
-    margin-bottom: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 0 50px rgba(0, 255, 255, 0.5),
-        0 0 100px rgba(255, 0, 255, 0.3),
-        inset 0 0 40px rgba(255, 255, 255, 0.2);
-    animation: photo-float 6s ease-in-out infinite;
-}
-
-@keyframes photo-float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
 }
 
 .my-photo {
@@ -179,6 +180,12 @@ body::after {
     box-shadow: 
         0 0 30px rgba(0, 255, 255, 0.3),
         inset 0 0 30px rgba(255, 255, 255, 0.1);
+    animation: photo-float 6s ease-in-out infinite;
+}
+
+@keyframes photo-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 .profile-box { text-align: center; }
@@ -192,6 +199,7 @@ body::after {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
 .typewriter {
     overflow: hidden;
     border-right: 3px solid #00ffff;
@@ -208,6 +216,7 @@ body::after {
     0%, 50% { border-color: transparent; }
     51%, 100% { border-color: #00ffff; }
 }
+
 .profile-box p {
     font-size: 1.3rem;
     color: rgba(255, 255, 255, 0.8);
@@ -242,7 +251,6 @@ body::after {
     text-decoration: none;
 }
 
-/* Hire Me Special Button - SIMPLIFIED GLOW ONLY (NO ROTATING) */
 .link-item.hire-me-special {
     background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25), rgba(255, 255, 0, 0.25));
     border: 2px solid rgba(255, 255, 255, 0.3);
@@ -456,7 +464,7 @@ body::after {
     to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
-/* FIXED PROJECTS SECTION */
+/* FIXED PROJECTS SECTION - PERFECT ALIGNMENT */
 .projects-grid {
     display: flex;
     justify-content: center;
@@ -471,18 +479,38 @@ body::after {
     flex-direction: column;
     align-items: center;
     width: 220px;
+    margin-bottom: 40px;
 }
 
 .project-item h3 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 1.1rem;
     font-weight: 600;
-    min-height: 2.4em;
+    
+    height: 4.5em; 
+    line-height: 1.4em;
+    
     display: flex;
     align-items: center;
+    justify-content: center; 
     text-align: center;
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    padding: 0 10px;
+    overflow: visible; 
+    word-break: keep-all;
+
+}
+
+.view-count {
+    font-size: 0.75rem;
+    color: #00ffff;
+    font-weight: 400;
+    margin-bottom: 15px; 
+    display: block;
+    width: 100%;
+    text-align: center;
+
 }
 
 .flip-card {
@@ -490,6 +518,7 @@ body::after {
     width: 220px;
     height: 220px;
     perspective: 1000px;
+    flex-shrink: 0;
 }
 
 .flip-card-inner {
@@ -570,6 +599,7 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .circle-item {
@@ -666,108 +696,7 @@ body::after {
     box-shadow: 0 20px 40px rgba(0, 255, 255, 0.6);
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .split-container {
-        flex-direction: column;
-        text-align: center;
-        min-height: auto;
-        padding-top: 120px;
-    }
-
-    .left-side, .right-side {
-        flex: none;
-        width: 100%;
-        padding: 20px;
-    }
-
-    .my-photo {
-        width: 90%;
-        max-width: 350px;
-        height: auto;
-        margin: 0 auto 20px auto;
-    }
-
-    .links-container {
-        margin: 0 auto;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .about-flex {
-        flex-direction: column;
-        text-align: center;
-        gap: 30px;
-    }
-
-    .about-text {
-        text-align: center;
-    }
-
-    .about-p {
-        text-align: center;
-    }
-
-    .about-image {
-        justify-content: center;
-        width: 100%;
-    }
-
-    .top-nav {
-        padding: 15px 20px;
-    }
-
-    .nav-links {
-        gap: 10px;
-    }
-
-    .nav-links a {
-        font-size: 0.8rem;
-        padding: 8px 12px;
-    }
-
-    .solar-system {
-        width: 350px;
-        height: 350px;
-    }
-
-    .orbit-1 { width: 140px; height: 140px; }
-    .orbit-2 { width: 180px; height: 180px; }
-    .orbit-3 { width: 220px; height: 220px; }
-    .orbit-4 { width: 260px; height: 260px; }
-    .orbit-5 { width: 300px; height: 300px; }
-    .orbit-6 { width: 340px; height: 340px; }
-    .orbit-7 { width: 380px; height: 380px; }
-
-    .project-item {
-        width: 200px;
-    }
-    
-    .flip-card {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .circle-link-container {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .circle-item {
-        width: 160px;
-        height: 160px;
-    }
-}
-#flashCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: screen;
-}
+/* Sticky Note Styles */
 .sticky-note {
     position: fixed;
     top: 50%;
@@ -862,34 +791,7 @@ body::after {
     box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .sticky-note {
-        width: 90vw;
-        max-width: 350px;
-    }
-}
-/* Scroll Progress Bar */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 4px;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-}
-
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00);
-    width: 0%;
-    border-radius: 2px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-    transition: width 0.2s ease;
-}
-/* --- Floating Meteorite --- */
+/* Floating Meteorite */
 .floating-meteorite {
     position: fixed;
     width: 65px;
@@ -897,38 +799,131 @@ body::after {
     z-index: 9999;
     pointer-events: none;
     filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.6));
-    
-    /* 35s large curved path loop across the screen views */
     animation: cosmicOrbit 35s ease-in-out infinite;
 }
 
 .floating-meteorite svg {
     width: 100%;
     height: 100%;
-    /* 12s independent rotation of the meteor */
     animation: slowSpin 12s linear infinite;
 }
 
-/* Organic Flight Path Across Viewport */
 @keyframes cosmicOrbit {
-    0% {
-        top: 30vh;
-        left: 10vw; 
+    0% { top: 30vh; left: 10vw; }
+    25% { top: 75vh; left: 40vw; }
+    50% { top: 20vh; left: 80vw; }
+    75% { top: 85vh; left: 50vw; }
+    100% { top: 30vh; left: 10vw; }
+}
+
+@keyframes slowSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+        padding-top: 120px;
     }
-    25% {
-        top: 75vh;
-        left: 40vw;
+
+    .left-side, .right-side {
+        flex: none;
+        width: 100%;
+        padding: 20px;
     }
-    50% {
-        top: 20vh;
-        left: 80vw;
+
+    .my-photo {
+        width: 90%;
+        max-width: 350px;
+        height: auto;
+        margin: 0 auto 20px auto;
     }
-    75% {
-        top: 85vh;
-        left: 50vw;
+
+    .links-container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 300px;
     }
-    100% {
-        top: 30vh;
-        left: 10vw;
+
+    .about-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .about-text {
+        text-align: center;
+    }
+
+    .about-p {
+        text-align: center;
+    }
+
+    .about-image {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .top-nav {
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    .solar-system {
+        width: 350px;
+        height: 350px;
+    }
+
+    .orbit-1 { width: 140px; height: 140px; }
+    .orbit-2 { width: 180px; height: 180px; }
+    .orbit-3 { width: 220px; height: 220px; }
+    .orbit-4 { width: 260px; height: 260px; }
+    .orbit-5 { width: 300px; height: 300px; }
+    .orbit-6 { width: 340px; height: 340px; }
+    .orbit-7 { width: 380px; height: 380px; }
+
+    /* MOBILE PROJECTS PERFECT ALIGNMENT */
+    .projects-grid {
+        justify-content: center;
+        gap: 25px;
+    }
+    
+    .project-item {
+        width: 200px;
+        height: 400px;
+    }
+    
+    .project-item h3 {
+        font-size: 1rem;
+        height: 3em;
+        line-height: 1.5em;
+    }
+    
+    .flip-card,
+    .circle-link-container {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .circle-item {
+        width: 160px;
+        height: 160px;
+    }
+
+    .sticky-note {
+        width: 90vw;
+        max-width: 350px;
     }
 }
