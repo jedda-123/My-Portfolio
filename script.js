@@ -270,3 +270,26 @@ document.querySelectorAll('.project-item').forEach((project, index) => {
         project.querySelector('.view-count').textContent = `(${newCount} views)`;
     });
 });
+// Skill Progress Bars Animation
+function animateSkillBars() {
+    const skillItems = document.querySelectorAll('.skill-item');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const skillFill = entry.target.querySelector('.skill-fill');
+                const percent = entry.target.querySelector('.skill-percent').textContent;
+                const skillPercent = parseInt(percent);
+                
+                // Animate fill
+                setTimeout(() => {
+                    skillFill.style.width = skillPercent + '%';
+                }, 200);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    skillItems.forEach(item => observer.observe(item));
+}
