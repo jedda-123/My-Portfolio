@@ -281,7 +281,6 @@ function animateSkillBars() {
                 const percent = entry.target.querySelector('.skill-percent').textContent;
                 const skillPercent = parseInt(percent);
                 
-                // Animate fill
                 setTimeout(() => {
                     skillFill.style.width = skillPercent + '%';
                 }, 200);
@@ -293,3 +292,39 @@ function animateSkillBars() {
     
     skillItems.forEach(item => observer.observe(item));
 }
+
+// HOVER EFFECTS
+document.querySelectorAll('.skill-item').forEach(item => {
+    item.addEventListener('mouseenter', function() {
+        const percent = this.querySelector('.skill-percent').textContent;
+        const skillName = this.getAttribute('data-skill');
+        createFlashEffect(this.offsetLeft + this.offsetWidth/2, this.offsetTop);
+        
+        // Show tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        tooltip.innerHTML = `<strong>${skillName}</strong><br>${percent} Mastery`;
+        tooltip.style.cssText = `
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            color: #00ffff;
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 10000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
+        `;
+        document.body.appendChild(tooltip);
+        
+        const rect = this.getBoundingClientRect();
+        tooltip.style.left = (rect.left + rect.width/2 - 80) + 'px';
+        tooltip.style.top = (rect.top - 60) + 'px';
+        
+        setTimeout(() => tooltip.remove(), 2000);
+    });
+});
+
+// Initialize skill animations when DOM loads
+document.addEventListener('DOMContentLoaded', animateSkillBars);

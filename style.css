@@ -1015,3 +1015,17 @@ body::after {
 .skill-fill.java { width: 90%; }
 .skill-fill.python { width: 85%; }
 .skill-fill.cpp { width: 80%; }
+/* Semi Transparent Navbar */
+.top-nav {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.project-item, .circle-link-container {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  box-shadow: 
+    10px 10px 20px rgba(0,0,0,0.3),
+    -10px -10px 20px rgba(255,255,255,0.05);
+}
