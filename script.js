@@ -1,22 +1,7 @@
+// Canvas Setup
 const canvas = document.getElementById('flashCanvas');
 const ctx = canvas.getContext('2d');
 const navbar = document.querySelector('.top-nav');
-
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-// Show Navbar
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-        navbar.classList.add('active');
-    } else {
-        navbar.classList.remove('active');
-    }
-});
 
 // NEW ELECTRIC CYAN FLASH WITH TRAIL EFFECT
 let flashParticles = [];
@@ -60,18 +45,18 @@ class FlashParticle {
 function createFlashEffect(x, y) {
     const centerX = x || canvas.width / 2;
     const centerY = y || canvas.height / 2;
-    
+   
     for (let i = 0; i < 30; i++) {
         flashParticles.push(new FlashParticle(centerX, centerY));
     }
-    
+   
     ctx.save();
     const pulseGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 100);
     pulseGradient.addColorStop(0, '#00ffff');
     pulseGradient.addColorStop(0.3, 'rgba(0, 255, 255, 0.8)');
     pulseGradient.addColorStop(0.7, 'rgba(0, 255, 255, 0.2)');
     pulseGradient.addColorStop(1, 'rgba(0, 255, 255, 0)');
-    
+   
     ctx.fillStyle = pulseGradient;
     ctx.beginPath();
     ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
@@ -81,36 +66,80 @@ function createFlashEffect(x, y) {
 
 function animateFlash() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+   
     for (let i = flashParticles.length - 1; i >= 0; i--) {
         flashParticles[i].update();
         flashParticles[i].draw();
-        
+       
         if (flashParticles[i].life <= 0) {
             flashParticles.splice(i, 1);
         }
     }
-    
+   
     if (flashParticles.length > 0) {
         requestAnimationFrame(animateFlash);
     }
 }
 
-document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        createFlashEffect(x, y);
-        animateFlash();
+// PERMANENT MOUSE TRAIL
+const trailCanvas = document.createElement('canvas');
+trailCanvas.id = 'mouseTrailCanvas';
+trailCanvas.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:9998;';
+trailCanvas.width = window.innerWidth;
+trailCanvas.height = window.innerHeight;
+document.body.appendChild(trailCanvas);
+
+const trailCtx = trailCanvas.getContext('2d');
+let mousePos = { x: 0, y: 0 };
+let trails = [];
+
+function resizeTrailCanvas() {
+    trailCanvas.width = window.innerWidth;
+    trailCanvas.height = window.innerHeight;
+}
+
+function animateTrail() {
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+   
+    trails.forEach((trail, index) => {
+        trail.life -= 0.015;
+       
+        trail.x += trail.vx;
+        trail.y += trail.vy;
+        trail.vx *= 0.95;
+        trail.vy *= 0.95;
+       
+        if (trail.life > 0) {
+            trailCtx.save();
+            trailCtx.globalAlpha = trail.life * 0.8;
+            trailCtx.fillStyle = '#00ffff';
+            trailCtx.shadowBlur = 25;
+            trailCtx.shadowColor = '#00ffff';
+           
+            const size = trail.life * 12;
+            trailCtx.beginPath();
+            trailCtx.arc(trail.x, trail.y, size, 0, Math.PI * 2);
+            trailCtx.fill();
+            trailCtx.restore();
+        } else {
+            trails.splice(index, 1);
+        }
     });
-});
+   
+    requestAnimationFrame(animateTrail);
+}
 
-// Nav Animation Accuracy
-const navLinks = document.querySelectorAll('.nav-links a, .link-item');
-const sections = document.querySelectorAll('section, .split-container');
+// Utility Functions
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    trailCanvas.width = window.innerWidth;
+    trailCanvas.height = window.innerHeight;
+}
 
-window.addEventListener('scroll', () => {
+function updateNavActiveLink() {
+    const navLinks = document.querySelectorAll('.nav-links a, .link-item');
+    const sections = document.querySelectorAll('section, .split-container');
     let current = "";
 
     sections.forEach(section => {
@@ -127,15 +156,99 @@ window.addEventListener('scroll', () => {
             link.classList.add('active-link');
         }
     });
-});
+}
 
-// Sticky Note Popup for Gmail
+function updateScrollProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+        bar.style.width = scrollPercent + '%';
+    });
+}
+
+function initProjectViewCounters() {
+    document.querySelectorAll('.project-item').forEach((project, index) => {
+        const count = localStorage.getItem(`project${index}`) || '1.2k';
+        project.querySelector('.view-count').textContent = `(${count} views)`;
+       
+        project.addEventListener('mouseenter', () => {
+            let newCount = parseInt(localStorage.getItem(`project${index}`) || '1200') + 1;
+            if (newCount >= 1000) {
+                newCount = (newCount / 1000).toFixed(1) + 'k';
+            }
+            localStorage.setItem(`project${index}`, newCount.toString());
+            project.querySelector('.view-count').textContent = `(${newCount} views)`;
+        });
+    });
+}
+
+function animateSkillBars() {
+    const skillItems = document.querySelectorAll('.skill-item');
+   
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const skillFill = entry.target.querySelector('.skill-fill');
+                const percent = entry.target.querySelector('.skill-percent').textContent;
+                const skillPercent = parseInt(percent);
+               
+                setTimeout(() => {
+                    skillFill.style.width = skillPercent + '%';
+                }, 200);
+               
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+   
+    skillItems.forEach(item => observer.observe(item));
+}
+
+function initSkillHoverEffects() {
+    document.querySelectorAll('.skill-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            const percent = this.querySelector('.skill-percent').textContent;
+            const skillName = this.getAttribute('data-skill');
+            
+            const rect = this.getBoundingClientRect();
+            const x = rect.left + rect.width / 2 + window.scrollX;
+            const y = rect.top + rect.height / 2 + window.scrollY;
+            createFlashEffect(x, y);
+            animateFlash();
+           
+            const tooltip = document.createElement('div');
+            tooltip.className = 'skill-tooltip';
+            tooltip.innerHTML = `<strong>${skillName}</strong><br>${percent} Mastery`;
+            tooltip.style.cssText = `
+                position: fixed;
+                background: rgba(0,0,0,0.9);
+                color: #00ffff;
+                padding: 12px 20px;
+                border-radius: 15px;
+                font-size: 0.9rem;
+                pointer-events: none;
+                z-index: 10000;
+                backdrop-filter: blur(20px);
+                box-shadow: 0 10px 30px rgba(0,255,255,0.4);
+            `;
+            document.body.appendChild(tooltip);
+           
+            tooltip.style.left = (rect.left + rect.width/2 - 80) + 'px';
+            tooltip.style.top = (rect.top - 60) + 'px';
+           
+            setTimeout(() => tooltip.remove(), 2000);
+        });
+    });
+}
+
+// FIXED: Sticky Note Popup for Gmail - ORIGINAL WORKING VERSION
 document.addEventListener('DOMContentLoaded', function() {
     const gmailTrigger = document.querySelector('.gmail-trigger');
     const stickyNote = document.getElementById('stickyNote');
     const copyBtn = document.querySelector('.copy-btn');
     const closeBtn = document.querySelector('.close-note');
-    
+   
     if (gmailTrigger) {
         gmailTrigger.addEventListener('click', function(e) {
             e.preventDefault();
@@ -144,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
             stickyNote.classList.remove('hidden');
         });
     }
-    
+   
     if (copyBtn) {
         copyBtn.addEventListener('click', function() {
             const email = stickyNote.querySelector('p strong').textContent;
@@ -158,13 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+   
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             stickyNote.classList.add('hidden');
         });
     }
-    
+   
     stickyNote.addEventListener('click', function(e) {
         if (e.target === this) {
             stickyNote.classList.add('hidden');
@@ -172,42 +285,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Scroll Progress Bar
+// Event Listeners
+window.addEventListener('resize', resizeCanvas);
 window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.body.scrollHeight - window.innerHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
-    document.querySelectorAll('.progress-bar').forEach(bar => {
-        bar.style.width = scrollPercent + '%';
-    });
+    // Show Navbar
+    if (window.scrollY > 200) {
+        navbar.classList.add('active');
+    } else {
+        navbar.classList.remove('active');
+    }
+    
+    updateNavActiveLink();
+    updateScrollProgress();
 });
-
-// PERMANENT MOUSE TRAIL
-const trailCanvas = document.createElement('canvas');
-trailCanvas.id = 'mouseTrailCanvas';
-trailCanvas.style.position = 'fixed';
-trailCanvas.style.top = '0';
-trailCanvas.style.left = '0';
-trailCanvas.style.pointerEvents = 'none';
-trailCanvas.style.zIndex = '9998';
-trailCanvas.width = window.innerWidth;
-trailCanvas.height = window.innerHeight;
-document.body.appendChild(trailCanvas);
-
-const trailCtx = trailCanvas.getContext('2d');
-let mousePos = { x: 0, y: 0 };
-let trails = [];
-
-function resizeTrailCanvas() {
-    trailCanvas.width = window.innerWidth;
-    trailCanvas.height = window.innerHeight;
-}
 
 window.addEventListener('mousemove', (e) => {
     mousePos.x = e.clientX;
     mousePos.y = e.clientY;
-    
-    // Add new trail particle
+   
     trails.push({
         x: e.clientX,
         y: e.clientY,
@@ -215,116 +310,25 @@ window.addEventListener('mousemove', (e) => {
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2
     });
-    
-    // Keep only 50 trails for performance
+   
     if (trails.length > 50) trails.shift();
 });
 
-function animateTrail() {
-    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-    
-    trails.forEach((trail, index) => {
-        trail.life -= 0.015; // Slower decay for permanent trail
-        
-        // Update position with slight movement
-        trail.x += trail.vx;
-        trail.y += trail.vy;
-        trail.vx *= 0.95;
-        trail.vy *= 0.95;
-        
-        if (trail.life > 0) {
-            trailCtx.save();
-            trailCtx.globalAlpha = trail.life * 0.8;
-            trailCtx.fillStyle = '#00ffff';
-            trailCtx.shadowBlur = 25;
-            trailCtx.shadowColor = '#00ffff';
-            
-            const size = trail.life * 12;
-            trailCtx.beginPath();
-            trailCtx.arc(trail.x, trail.y, size, 0, Math.PI * 2);
-            trailCtx.fill();
-            trailCtx.restore();
-        } else {
-            trails.splice(index, 1);
-        }
-    });
-    
-    requestAnimationFrame(animateTrail);
-}
-
-// Start permanent trail animation
-animateTrail();
-window.addEventListener('resize', resizeTrailCanvas);
-
-// Project View Counter
-document.querySelectorAll('.project-item').forEach((project, index) => {
-    const count = localStorage.getItem(`project${index}`) || '1.2k';
-    project.querySelector('.view-count').textContent = `(${count} views)`;
-    
-    project.addEventListener('mouseenter', () => {
-        let newCount = parseInt(localStorage.getItem(`project${index}`) || '1200') + 1;
-        if (newCount >= 1000) {
-            newCount = (newCount / 1000).toFixed(1) + 'k';
-        }
-        localStorage.setItem(`project${index}`, newCount.toString());
-        project.querySelector('.view-count').textContent = `(${newCount} views)`;
-    });
-});
-// Skill Progress Bars Animation
-function animateSkillBars() {
-    const skillItems = document.querySelectorAll('.skill-item');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const skillFill = entry.target.querySelector('.skill-fill');
-                const percent = entry.target.querySelector('.skill-percent').textContent;
-                const skillPercent = parseInt(percent);
-                
-                setTimeout(() => {
-                    skillFill.style.width = skillPercent + '%';
-                }, 200);
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    skillItems.forEach(item => observer.observe(item));
-}
-
-// HOVER EFFECTS
-document.querySelectorAll('.skill-item').forEach(item => {
-    item.addEventListener('mouseenter', function() {
-        const percent = this.querySelector('.skill-percent').textContent;
-        const skillName = this.getAttribute('data-skill');
-        createFlashEffect(this.offsetLeft + this.offsetWidth/2, this.offsetTop);
-        
-        // Show tooltip
-        const tooltip = document.createElement('div');
-        tooltip.className = 'skill-tooltip';
-        tooltip.innerHTML = `<strong>${skillName}</strong><br>${percent} Mastery`;
-        tooltip.style.cssText = `
-            position: fixed;
-            background: rgba(0,0,0,0.9);
-            color: #00ffff;
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            pointer-events: none;
-            z-index: 10000;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
-        `;
-        document.body.appendChild(tooltip);
-        
-        const rect = this.getBoundingClientRect();
-        tooltip.style.left = (rect.left + rect.width/2 - 80) + 'px';
-        tooltip.style.top = (rect.top - 60) + 'px';
-        
-        setTimeout(() => tooltip.remove(), 2000);
+document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        createFlashEffect(x, y);
+        animateFlash();
     });
 });
 
-// Initialize skill animations when DOM loads
-document.addEventListener('DOMContentLoaded', animateSkillBars);
+// Initialize everything
+document.addEventListener('DOMContentLoaded', () => {
+    resizeCanvas();
+    animateTrail();
+    initProjectViewCounters();
+    animateSkillBars();
+    initSkillHoverEffects();
+});
