@@ -227,6 +227,42 @@ body::after {
     text-decoration: none;
 }
 
+/* Hire Me Special Button - SIMPLIFIED GLOW ONLY (NO ROTATING) */
+.link-item.hire-me-special {
+    background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25), rgba(255, 255, 0, 0.25));
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: hire-me-glow 2s ease-in-out infinite alternate;
+    box-shadow: 
+        0 0 25px rgba(0, 255, 255, 0.5),
+        0 0 45px rgba(255, 0, 255, 0.4);
+}
+
+.link-item.hire-me-special i {
+    color: #ffff00;
+    text-shadow: 0 0 12px rgba(255, 255, 0, 0.9);
+}
+
+.link-item.hire-me-special:hover {
+    background: linear-gradient(45deg, rgba(0, 255, 255, 0.35), rgba(255, 0, 255, 0.35), rgba(255, 255, 0, 0.35));
+    transform: translateX(15px) scale(1.05);
+    box-shadow: 
+        0 0 45px rgba(0, 255, 255, 0.7),
+        0 15px 45px rgba(255, 0, 255, 0.6);
+}
+
+@keyframes hire-me-glow {
+    0% { 
+        box-shadow: 
+            0 0 25px rgba(0, 255, 255, 0.5),
+            0 0 45px rgba(255, 0, 255, 0.4);
+    }
+    100% { 
+        box-shadow: 
+            0 0 35px rgba(0, 255, 255, 0.7),
+            0 0 55px rgba(255, 0, 255, 0.6);
+    }
+}
+
 .link-item:hover {
     background: linear-gradient(45deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
     transform: translateX(10px) scale(1.02);
